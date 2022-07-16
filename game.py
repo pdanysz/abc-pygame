@@ -1,11 +1,17 @@
 # 1 - Import library
 from ntpath import join
+import time
 import pygame
 from pygame.locals import *
+import pathlib
+path = pathlib.Path().resolve()
 
 # 2 - Initialize the game
 pygame.init()
+pygame.mixer.init()
 width, height = 640*2, 480*2
+SOUNDS = f'{path}/sounds'
+
 screen=pygame.display.set_mode((width, height), pygame.RESIZABLE)
 
 
@@ -70,11 +76,34 @@ def get_key(key):
         return 'x'
     if key[pygame.K_y]:
         return 'y'
+    if key[pygame.K_v]:
+        return 'v'
     if key[pygame.K_z]:
         return 'z'
+    if key[pygame.K_1]:
+        return '1'
+    if key[pygame.K_2]:
+        return '2'
+    if key[pygame.K_3]:
+        return '3'
+    if key[pygame.K_4]:
+        return '4'
+    if key[pygame.K_5]:
+        return '5'
+    if key[pygame.K_6]:
+        return '6'
+    if key[pygame.K_7]:
+        return '7'
+    if key[pygame.K_8]:
+        return '8'
+    if key[pygame.K_9]:
+        return '9'
+    if key[pygame.K_0]:
+        return '0'
 
 # 4 - keep looping through
 clock = pygame.time.Clock()
+prev_key = ""
 
 while 1:
     clock.tick(30)
@@ -108,7 +137,6 @@ while 1:
         if len(enteredText) == 1:
             enteredText = []
             key = "_"
-
     key = get_key(keyPressed)
 
     if (key):
@@ -120,7 +148,15 @@ while 1:
                     enteredText.append(key.upper())
             else:
                 enteredText.append(key.upper())
+
         text = font.render( key.upper(), True, (200,0,0), (0,0,0))
+
+        if prev_key != key:
+            prev_key = key
+            sound = pygame.mixer.Sound( f'{SOUNDS}/{key}.ogg')
+            sound.play()
+        
+        # prev_key = key
 
     summary = fontSmall.render( " ".join(enteredText)+"_", True, (200,0,0), (0,0,0))
         
